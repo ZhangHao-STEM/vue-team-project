@@ -1,42 +1,51 @@
 <script setup>
+import {ref} from 'vue'
 import { User, Lock } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { View, Hide } from '@element-plus/icons-vue'
+
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
 
+// 控制显示密码明文的状态
+const showPassword = ref(false)
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;  // 切换密码显示状态
+}
+
 //定义数据模型
 const registerData = ref({
-  username:'',
-  password:'',
-  rePassword:''
+  username: '',
+  password: '',
+  rePassword: ''
 })
 
 //二次校验密码的函数
-const checkRePassword = (rule,value,callback) => {
-  if(value === ''){
+const checkRePassword = (rule, value, callback) => {
+  if (value === '') {
     callback(new Error('请再次确认密码'))
-  } else if( value !== registerData.value.password){
+  } else if (value !== registerData.value.password) {
     callback('二次确认密码不相同请重新输入')
-  } else{
+  } else {
     callback()
   }
 }
 
 //定义表单校验规则
 const rules = ref({
-  username:[
-    {required:true,message:'请输入用户名',trigger:'blur'},
-    {min:5,max:16,message:'请输入长度5~16非空字符',trigger:'blur'}
+  username: [
+    {required: true, message: '请输入用户名', trigger: 'blur'},
+    {min: 5, max: 16, message: '请输入长度5~16非空字符', trigger: 'blur'}
   ],
-  password:[
-    {required:true,message:'请输入密码',trigger:'blur'},
-    {min:5,max:16,message:'请输入长度5~16非空字符',trigger:'blur'}
+  password: [
+    {required: true, message: '请输入密码', trigger: 'blur'},
+    {min: 5, max: 16, message: '请输入长度5~16非空字符', trigger: 'blur'}
   ],
-  rePassword:[{validator:checkRePassword,trigger:'blur'}] //校验二次输入密码是否相同
+  rePassword: [{validator: checkRePassword, trigger: 'blur'}] //校验二次输入密码是否相同
 })
 
 //导入提示框组件
-import { ElMessage } from 'element-plus'
+import {ElMessage} from 'element-plus'
 //调用后台接口完成注册
 import {userRegisterService} from '@/api/user.js'
 /*
@@ -84,7 +93,7 @@ const register = async () => {
   }
 };
 
-import { userLoginService } from '@/api/user.js';
+import {userLoginService} from '@/api/user.js';
 
 const login = async () => {
   // 调用模拟登录服务
@@ -98,11 +107,11 @@ const login = async () => {
 };
 
 //定义函数，清空数据模型
-const clearRegisterData = () =>{
+const clearRegisterData = () => {
   registerData.value = {
-    username:'',
-    password:'',
-    rePassword:''
+    username: '',
+    password: '',
+    rePassword: ''
   }
 }
 </script>
@@ -119,11 +128,37 @@ const clearRegisterData = () =>{
         <el-form-item prop="username">
           <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
         </el-form-item>
+
         <el-form-item prop="password">
-          <el-input :prefix-icon="Lock" type="password" placeholder="请输入密码" v-model="registerData.password"></el-input>
+          <el-input
+              :prefix-icon="Lock"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="请输入密码"
+              v-model="registerData.password"
+          >
+            <template #append>
+              <el-icon @click="togglePasswordVisibility">
+                <View v-if="!showPassword" />
+                <Hide v-if="showPassword" />
+              </el-icon>
+            </template>
+          </el-input>
         </el-form-item>
+
         <el-form-item prop="rePassword">
-          <el-input :prefix-icon="Lock" type="password" placeholder="请输入再次密码" v-model="registerData.rePassword"></el-input>
+          <el-input
+              :prefix-icon="Lock"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="请输入再次密码"
+              v-model="registerData.rePassword"
+          >
+            <template #append>
+              <el-icon @click="togglePasswordVisibility">
+                <View v-if="!showPassword" />
+                <Hide v-if="showPassword" />
+              </el-icon>
+            </template>
+          </el-input>
         </el-form-item>
         <!-- 注册按钮 -->
         <el-form-item>
@@ -145,8 +180,22 @@ const clearRegisterData = () =>{
         <el-form-item prop="username">
           <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
         </el-form-item>
+
         <el-form-item prop="password">
-          <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码" v-model="registerData.password"></el-input>
+          <el-input
+              name="password"
+              :prefix-icon="Lock"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="请输入密码"
+              v-model="registerData.password"
+          >
+            <template #append>
+              <el-icon @click="togglePasswordVisibility">
+                <View v-if="!showPassword" />
+                <Hide v-if="showPassword" />
+              </el-icon>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item class="flex">
           <div class="flex">
