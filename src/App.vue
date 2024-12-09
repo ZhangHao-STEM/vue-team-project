@@ -1,13 +1,12 @@
 <template>
-  <LoginForm/>
+  <router-view/>
 </template>
 
 <script>
-import LoginForm from '@/views/LoginForm.vue'
+
 export default {
   name: 'App',
   components: {
-    LoginForm
   }
 }
 </script>
@@ -15,3 +14,24 @@ export default {
 <style>
 
 </style>
+<!--
+<template>
+  <LoginForm/>
+  <LayoutForm/>
+</template>
+
+<script>
+import LoginForm from '@/views/LoginForm.vue'
+import LayoutForm from "@/views/LayoutForm.vue";
+export default {
+  name: 'App',
+  components: {
+    LayoutForm,
+    LoginForm
+  }
+}
+</script>
+
+<style>
+
+</style>-->

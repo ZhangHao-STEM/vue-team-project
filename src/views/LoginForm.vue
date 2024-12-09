@@ -93,6 +93,9 @@ const register = async () => {
   }
 };
 
+//导入路由函数
+import {useRouter} from 'vue-router'
+const router = useRouter()
 import {userLoginService} from '@/api/user.js';
 
 const login = async () => {
@@ -101,6 +104,8 @@ const login = async () => {
 
   if (result.code === 0) {
     ElMessage.success('登录成功!')
+    //跳转到首页面
+    router.push('/')
   } else {
     ElMessage.error('登录失败');
   }
